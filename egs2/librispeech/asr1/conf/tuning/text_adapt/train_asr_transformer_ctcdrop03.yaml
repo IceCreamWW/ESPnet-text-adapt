@@ -1,0 +1,71 @@
+batch_type: numel
+# batch_bins: 16000000
+batch_bins: 32000000
+accum_grad: 4
+max_epoch: 300
+patience: 15
+# The initialization method for model parameters
+init: xavier_uniform
+best_model_criterion:
+-   - valid
+    - cer_ctc
+    - min
+keep_nbest_models: 10
+
+a2p: transformer
+a2p_conf:
+    output_size: 512
+    attention_heads: 8
+    linear_units: 2048
+    num_blocks: 12
+    dropout_rate: 0.1
+    positional_dropout_rate: 0.1
+    attention_dropout_rate: 0.0
+    input_layer: conv2d
+    normalize_before: true
+
+p2w: transformer
+p2w_conf:
+    output_size: 512
+    attention_heads: 8
+    linear_units: 2048
+    num_blocks: 6
+    dropout_rate: 0.1
+    positional_dropout_rate: 0.1
+    attention_dropout_rate: 0.0
+    input_layer: identity
+    normalize_before: true
+
+model_conf:
+    phn_ctc_weight: 0.2
+    p2w_use_posterior: false
+
+ctc_conf:
+    dropout_rate: 0.3
+
+optim: adam
+optim_conf:
+    lr: 0.0015
+scheduler: warmuplr
+scheduler_conf:
+    warmup_steps: 25000
+
+frontend_conf:
+  n_fft: 400
+  hop_length: 160
+
+specaug: specaug
+specaug_conf:
+    apply_time_warp: true
+    time_warp_window: 5
+    time_warp_mode: bicubic
+    apply_freq_mask: true
+    freq_mask_width_range:
+    - 0
+    - 30
+    num_freq_mask: 2
+    apply_time_mask: true
+    time_mask_width_range:
+    - 0
+    - 40
+    num_time_mask: 2
